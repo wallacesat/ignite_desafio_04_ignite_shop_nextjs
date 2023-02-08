@@ -1,9 +1,11 @@
+import * as React from 'react';
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
 
 import { useKeenSlider } from 'keen-slider/react'
+import { Handbag } from 'phosphor-react'
 import Stripe from 'stripe'
 
 import { stripe } from '@/lib/stripe'
@@ -31,6 +33,10 @@ export default function Home({ products }: HomeProps) {
     }
   })
 
+  function handleAddItemToCart(event: React.MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation()
+  }
+
   return (
     <>
       <Head>
@@ -44,8 +50,14 @@ export default function Home({ products }: HomeProps) {
               <Product>
                 <Image src={product.imageUrl} alt="" width={520} height={480} />
                 <footer>
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
+                  <div>
+                    <strong>{product.name}</strong>
+                    <span>{product.price}</span>
+                  </div>
+
+                  <button onClick={handleAddItemToCart}>
+                    <Handbag size={32} weight="bold" />
+                  </button>
                 </footer>
               </Product>
             </Link>

@@ -6,7 +6,7 @@ import Stripe from "stripe";
 
 import { stripe } from "@/lib/stripe";
 
-import { ImageContainer, SuccessContainer } from "@/styles/pages/success";
+import { ImageContainer, ItemsImages, OverflowItemsIndicator, SuccessContainer } from "@/styles/pages/success";
 
 interface SuccessProps {
   customerName: string
@@ -17,6 +17,10 @@ interface SuccessProps {
 }
 
 export default function Success({ customerName, product }: SuccessProps) {
+
+  const list = Array.from(new Array(10));
+  const itemsOverflowed = list.length > 3;
+
   return (
     <>
       <Head>
@@ -25,13 +29,24 @@ export default function Success({ customerName, product }: SuccessProps) {
         <meta name="robots" content="noindex" />
       </Head>
       <SuccessContainer>
+        <ItemsImages>
+          {
+            list.slice(0, 3).map((l, index) => (
+              <ImageContainer key={`${product.imageUrl}_${index}`}>
+                <Image src={product.imageUrl} width={120} height={110} alt="" />
+              </ImageContainer>
+            ))
+          }
+          {itemsOverflowed && (
+            <OverflowItemsIndicator>
+              {`+${list.length - 3}`}
+            </OverflowItemsIndicator>
+          )}
+        </ItemsImages>
+
         <h1>Compra efetuada</h1>
 
-        <ImageContainer>
-          <Image src={product.imageUrl} width={120} height={110} alt="" />
-        </ImageContainer>
-
-        <p>Uhuul <strong>{customerName.toLowerCase()}</strong>, sua <strong>{product.name}</strong> já está a caminho da sua casa. </p>
+        <p>Uhuul <strong>{customerName.toLowerCase()}</strong>, sua compra de 3 camisetas já está a caminho da sua casa. </p>
 
         <Link href="/" prefetch={false}>
           Voltar ao catálogo
