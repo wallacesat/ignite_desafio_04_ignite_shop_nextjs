@@ -20,6 +20,8 @@ export const {
       gray800: '#202024',
       gray900: '#121214',
 
+      skeleton: '#18181b',
+
       green300: '#00b37e',
       green500: '#00875f',
     },
