@@ -1,33 +1,40 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
 
+import { useShoppingCart } from 'use-shopping-cart';
 import { useKeenSlider } from 'keen-slider/react'
 import { Handbag } from 'phosphor-react'
 import Stripe from 'stripe'
 
 import { SlideArrow } from '@/components/SlideArrow';
 
-import { stripe } from '@/lib/stripe'
+import { createStripe } from '@/lib/stripe'
+import { formatToBRLCurrencyPrice, formatToStripePrice } from '@/utils/formatters';
 
-import { HomeContainer, Product } from '@/styles/pages/home'
+import { HomeContainer, Product, ProductContent } from '@/styles/pages/home'
 
 import 'keen-slider/keen-slider.min.css'
 
+export type ProductType = {
+  id: string
+  name: string
+  imageUrl: string
+  price: string
+  defaultPriceId: string
+}
+
 interface HomeProps {
-  products: {
-    id: string
-    name: string
-    imageUrl: string
-    price: string
-  }[]
+  products: ProductType[]
 }
 
 export default function Home({ products }: HomeProps) {
   const [currentSlide, setCurrentSlide] = useState(2)
   const [loaded, setLoaded] = useState(false)
+
+  const { addItem } = useShoppingCart()
 
   const [sliderRef, instanceRef] = useKeenSlider({
     rtl: true,
@@ -45,8 +52,14 @@ export default function Home({ products }: HomeProps) {
     },
   })
 
-  function handleAddItemToCart(event: MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation()
+  function handleAddItemToCart(product: ProductType) {
+    addItem({
+      id: product.defaultPriceId,
+      name: product.name,
+      price: formatToStripePrice(product.price),
+      currency: 'BRL',
+      image: product.imageUrl,
+    })
   }
 
   return (
@@ -66,26 +79,35 @@ export default function Home({ products }: HomeProps) {
 
         {
           products.map(product => (
-            <Link key={product.id} href={`/product/${product.id}`} className="keen-slider__slide" prefetch={false}>
-              <Product>
-                <Image
-                  src={product.imageUrl}
-                  alt=""
-                  width={520}
-                  height={480}
-                />
-                <footer>
-                  <div>
-                    <strong>{product.name}</strong>
-                    <span>{product.price}</span>
-                  </div>
+            <Product key={product.id} className="keen-slider__slide">
+              <Link
+                href={`/product/${product.id}`}
+                prefetch={false}
+              >
+                <ProductContent>
+                  <Image
+                    src={product.imageUrl}
+                    alt=""
+                    width={520}
+                    height={480}
+                  />
+                </ProductContent>
+              </Link>
+              
+              <footer>
+                <Link
+                  href={`/product/${product.id}`}
+                  prefetch={false}
+                >
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </Link>
 
-                  <button onClick={handleAddItemToCart}>
-                    <Handbag size={32} weight="bold" />
-                  </button>
-                </footer>
-              </Product>
-            </Link>
+                <button onClick={() => handleAddItemToCart(product)}>
+                  <Handbag size={32} weight="bold" />
+                </button>
+              </footer>
+            </Product>
           ))
         }
         
@@ -101,7 +123,7 @@ export default function Home({ products }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const response = await stripe.products.list({
+  const response = await createStripe().products.list({
     expand: ['data.default_price']
   })
 
@@ -112,12 +134,9 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(price.unit_amount / 100),
+      price: formatToBRLCurrencyPrice(price.unit_amount),
+      defaultPriceId: price.id
     }
-
   })
 
   return {

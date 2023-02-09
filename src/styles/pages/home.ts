@@ -6,28 +6,16 @@ export const HomeContainer = styled('main', {
   maxWidth: 'calc(100vw - ((100vw - 1180px) /2) + 50px)',
   marginLeft: 'auto',
   minHeight: 656,
-
-  a: {
-    background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
-    borderRadius: 8,
-    cursor: 'pointer',
-    position: 'relative',
-    overflow: 'hidden',
-
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   position: 'relative',
-  zIndex: 10,
   paddingLeft: 50
 });
 
 export const Product = styled('div', {
-  img: {
-    objectFit: 'cover'
-  },
+  position: 'relative',
+  overflow: 'hidden',
+  cursor: 'pointer',
+  borderRadius: 8,
+  background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
 
   footer: {
     position: 'absolute',
@@ -48,10 +36,12 @@ export const Product = styled('div', {
     opacity: 0,
     transition: 'all 0.2s ease-in-out',
 
-    '& > div': {
+    '& > a': {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
+      textDecoration: 'none',
+      flex: 1,
 
       strong: {
         fontSize: '$lg',
@@ -89,3 +79,13 @@ export const Product = styled('div', {
     }
   }
 });
+
+export const ProductContent = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  img: {
+    objectFit: 'cover'
+  },
+})

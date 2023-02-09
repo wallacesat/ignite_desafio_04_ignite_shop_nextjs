@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Head from "next/head";
 import Stripe from "stripe";
-import axios from "axios";
+import { useShoppingCart } from "use-shopping-cart";
 
-import { stripe } from "@/lib/stripe";
+import { createStripe } from "@/lib/stripe";
+import { formatToStripePrice } from "@/utils/formatters";
+
 import { ImageContainer, ProductContainer, ProductDetails } from "@/styles/pages/product"
 
 interface ProductProps {
@@ -20,24 +21,16 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
+  const { addItem } = useShoppingCart()
 
-  async function handleByProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      })
-
-      const { checkoutUrl } = response.data
-
-      window.location.href = checkoutUrl
-    } catch (error) {
-      // Conectar com uma ferramento de obervabilidade (Datadog / Sentry)
-
-      setIsCreatingCheckoutSession(false)
-      alert('Falha ao redirecionar ao checkout')
-    }
+  function handleAddItemToCart() {
+    addItem({
+      id: product.defaultPriceId,
+      name: product.name,
+      price: formatToStripePrice(product.price),
+      currency: 'BRL',
+      image: product.imageUrl,
+    })
   }
 
   return (
@@ -56,8 +49,8 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleByProduct}>
-            Comprar agora
+          <button onClick={handleAddItemToCart}>
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -81,7 +74,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ params }) => {
   const productId = params.id;
 
-  const product = await stripe.products.retrieve(productId, {
+  const product = await createStripe().products.retrieve(productId, {
     expand: ['default_price']
   })
 

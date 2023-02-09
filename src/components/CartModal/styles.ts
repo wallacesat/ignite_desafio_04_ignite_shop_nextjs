@@ -1,7 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { styled } from "@stitches/react";
 
-
 export const Overlay = styled(Dialog.Overlay, {
   position: "fixed",
   width: "100vw",
@@ -20,6 +19,7 @@ export const Content = styled(Dialog.Content, {
   paddingTop: '4.5rem',
   display: 'flex',
   flexDirection: 'column',
+  zIndex: 9999,
 
   boxShadow: '-4px 0px 30px rgba(0, 0, 0, 0.8)',
   background: '$gray800',
@@ -58,16 +58,18 @@ export const CloseButton = styled(Dialog.Close, {
 })
 
 export const OrderItems = styled('div', {
-  marginTop: '2rem',
+  marginTop: '1rem',
   display: 'flex',
   flexDirection: 'column',
   gap: '1.53125rem',
-  overflowY: 'auto'
+  overflowY: 'auto',
+  padding: '1rem 0',
 })
 
 export const Item = styled('div', {
   display: 'flex',
-  gap: '1.25rem'
+  gap: '1.25rem',
+  position: 'relative',
 })
 
 export const ImageContainer = styled('div', {
@@ -112,6 +114,26 @@ export const ItemDescription = styled('div', {
   }
 })
 
+export const ItemCount = styled('div', {
+  position: 'absolute',
+  width: 30,
+  height: 30,
+  borderRadius: '50%',
+  backgroundColor: '$gray100',
+  border: '3px solid $gray800',
+
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  fontSize: '0.75rem',
+  color: '$green500',
+  fontWeight: 'bold',
+
+  top: 30,
+  left: 85
+})
+
 export const Summary = styled('div', {
   marginTop: 'auto',
 
@@ -130,7 +152,12 @@ export const Summary = styled('div', {
     border: 0,
     cursor: 'pointer',
 
-    '&:hover': {
+    '&:disabled': {
+      opacity: 0.6,
+      cursor: 'not-allowed',
+    },
+
+    '&:not(:disabled):hover': {
       backgroundColor: '$green300'
     }
 

@@ -1,64 +1,40 @@
-import { useState } from 'react';
 import { AppProps } from "next/app";
-import { useRouter } from 'next/router';
-import Image from "next/image";
-import * as Dialog from "@radix-ui/react-dialog";
-import { Handbag } from "phosphor-react";
+import { CartProvider } from 'use-shopping-cart'
 
-import { CartModal } from "@/components/CartModal";
-
-import logoImg from '@/assets/logo.svg'
+import { Header } from "@/components/Header";
 
 import { globalStyles } from "../styles/global";
-import { Container, Header, CartButton } from "@/styles/pages/app";
+import { Container } from "@/styles/pages/app";
 
 globalStyles()
 
-export default function App({ Component, pageProps }: AppProps) {
-  const { pathname } = useRouter()
+export default function App({ Component, pageProps  }: AppProps) {
 
-  const [ cartModalIsOpen, setCartModalIsOpen ] = useState(false);
-  const [ isOpen, setIsOpen ] = useState(false);
-
-  function handleOpenCartModal() {
-    setCartModalIsOpen(true);
-    
-    const time = setTimeout(() => {
-      setIsOpen(true);
-      clearTimeout(time);
-    }, 50)
+  const envs = {
+    stripe: process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
+    successUrl: `${process.env.NEXT_PUBLIC_NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancelUrl: `${process.env.NEXT_PUBLIC_NEXT_URL}/`
   }
-
-  function handleCloseCartModal() {
-    setIsOpen(false);
-
-    const time = setTimeout(() => {
-      setCartModalIsOpen(false);
-      clearTimeout(time);
-    }, 300)
-  }
-
-  const isSuccessPage = pathname.startsWith('/success');
 
   return (
-    <Container>
-      <Header className={isSuccessPage ? '-success-page' : ''}>
-        <Image src={logoImg} alt=""/>
+    <CartProvider
+      mode="payment"
+      cartMode="client-only"
+      stripe={envs.stripe}
+      successUrl={envs.successUrl}
+      cancelUrl={envs.cancelUrl}
+      currency="BRL"
+      allowedCountries={['BR']}
+      billingAddressCollection={false}
+      shouldPersist
+      language="pt-BR"
+      persistKey="@desafio_04_ignite_shop/v1.0"
+    >
+      <Container>
+        <Header />
 
-        {!isSuccessPage && (
-          <Dialog.Root onOpenChange={(state) => !!state ? handleOpenCartModal() : handleCloseCartModal()} open={cartModalIsOpen}>
-            <Dialog.Trigger asChild>
-              <CartButton>
-                <Handbag size={24} weight="bold" />
-                <span>3</span>
-              </CartButton>
-            </Dialog.Trigger>
-
-            <CartModal isOpen={isOpen} />
-          </Dialog.Root>
-        )}
-      </Header>
-      <Component {...pageProps} />
-    </Container>
+        <Component {...pageProps} />
+      </Container>
+    </CartProvider>
   )
 }
