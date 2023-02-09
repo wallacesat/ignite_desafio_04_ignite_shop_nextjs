@@ -1,10 +1,13 @@
 import { AppProps } from 'next/app'
 import { CartProvider } from 'use-shopping-cart'
+import { ToastContainer } from 'react-toastify'
 
 import { Header } from '@/components/Header'
 
 import { globalStyles } from '../styles/global'
 import { Container } from '@/styles/pages/app'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 globalStyles()
 
@@ -33,6 +36,19 @@ export default function App({ Component, pageProps }: AppProps) {
         <Header />
 
         <Component {...pageProps} />
+
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </Container>
     </CartProvider>
   )

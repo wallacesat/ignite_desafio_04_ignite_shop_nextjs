@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { X } from 'phosphor-react'
 import { useShoppingCart } from 'use-shopping-cart'
 import * as Dialog from '@radix-ui/react-dialog'
+import { toast } from 'react-toastify'
 
 import { formatToBRLCurrencyPrice } from '@/utils/formatters'
 
@@ -51,6 +52,10 @@ export function CartModal({ isOpen }: CartModalProps) {
     }
   })
 
+  function handleToasError() {
+    toast.error('Houve um erro ao realizar o checkout')
+  }
+
   async function handleRedirectToCheckout() {
     if (cartCount > 0) {
       setStatus('redirecting')
@@ -59,18 +64,23 @@ export function CartModal({ isOpen }: CartModalProps) {
         if (result?.error) {
           console.error(result)
           setStatus('redirect-error')
+          handleToasError()
         }
       } catch (error) {
         console.error(error)
         setStatus('redirect-error')
+        handleToasError()
       }
     } else {
       setStatus('missing-items')
+      handleToasError()
     }
   }
 
   function handleRemoveItemFromCart(itemId: string) {
     removeItem(itemId)
+
+    toast.info('Camiseta removida da sacola')
   }
 
   return (

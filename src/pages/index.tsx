@@ -3,6 +3,7 @@ import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
+import { toast } from 'react-toastify'
 
 import { useShoppingCart } from 'use-shopping-cart'
 import { useKeenSlider } from 'keen-slider/react'
@@ -63,6 +64,8 @@ export default function Home({ products }: HomeProps) {
       currency: 'BRL',
       image: product.imageUrl,
     })
+
+    toast.success(`Camiseta ${product.name} foi adicionada à sacola`)
   }
 
   return (

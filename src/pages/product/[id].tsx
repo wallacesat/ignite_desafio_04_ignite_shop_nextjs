@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Head from 'next/head'
 import Stripe from 'stripe'
 import { useShoppingCart } from 'use-shopping-cart'
+import { toast } from 'react-toastify'
 
 import { createStripe } from '@/lib/stripe'
 import { formatToStripePrice } from '@/utils/formatters'
@@ -35,6 +36,8 @@ export default function Product({ product }: ProductProps) {
       currency: 'BRL',
       image: product.imageUrl,
     })
+
+    toast.success(`Camiseta ${product.name} foi adicionada à sacola`)
   }
 
   return (
