@@ -8,8 +8,8 @@ export function createStripe(useSecretApiKey?: boolean) {
   const stripe = new Stripe(stripeKey, {
     apiVersion: '2022-11-15',
     appInfo: {
-      name: 'Ignite Shop'
-    }
+      name: 'Ignite Shop',
+    },
   })
 
   return stripe

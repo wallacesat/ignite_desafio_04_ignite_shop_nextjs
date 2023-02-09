@@ -1,16 +1,16 @@
-import * as Dialog from "@radix-ui/react-dialog";
-import { styled } from "@stitches/react";
+import * as Dialog from '@radix-ui/react-dialog'
+import { styled } from '@stitches/react'
 
 export const Overlay = styled(Dialog.Overlay, {
-  position: "fixed",
-  width: "100vw",
-  height: "100vh",
+  position: 'fixed',
+  width: '100vw',
+  height: '100vh',
   inset: 0,
-  background: "transparent"
+  background: 'transparent',
 })
 
 export const Content = styled(Dialog.Content, {
-  position: "fixed",
+  position: 'fixed',
   height: '100%',
   minWidth: 480,
   top: 0,
@@ -32,29 +32,28 @@ export const Content = styled(Dialog.Content, {
     transform: 'translateX(0%)',
     opacity: 1,
     transition: 'all 0.3s ease-in-out',
-
   },
 
   '& > h2': {
     fontSize: '1.25rem',
     color: '$gray100',
     fontWeight: 'bold',
-  }
+  },
 })
 
 export const CloseButton = styled(Dialog.Close, {
-  position: "absolute",
-  background: "transparent",
+  position: 'absolute',
+  background: 'transparent',
   border: 0,
-  top: "1.5rem",
-  right: "1.5rem",
+  top: '1.5rem',
+  right: '1.5rem',
   lineHeight: 0,
-  cursor: "pointer",
-  color: "$gray400",
+  cursor: 'pointer',
+  color: '$gray400',
 
   '&:hover': {
-    color: '$gray300'
-  }
+    color: '$gray300',
+  },
 })
 
 export const OrderItems = styled('div', {
@@ -83,11 +82,11 @@ export const ItemDescription = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  
+
   '& > p': {
     fontSize: '1.125rem',
     color: '$gray300',
-    lineHeight: '160%'
+    lineHeight: '160%',
   },
 
   '& > span': {
@@ -95,7 +94,7 @@ export const ItemDescription = styled('div', {
     fontSize: '1.125rem',
     fontWeight: 'bold',
     color: '$gray100',
-    lineHeight: '160%'
+    lineHeight: '160%',
   },
 
   '& > button': {
@@ -110,8 +109,8 @@ export const ItemDescription = styled('div', {
 
     '&:hover': {
       color: '$green300',
-    }
-  }
+    },
+  },
 })
 
 export const ItemCount = styled('div', {
@@ -131,7 +130,7 @@ export const ItemCount = styled('div', {
   fontWeight: 'bold',
 
   top: 30,
-  left: 85
+  left: 85,
 })
 
 export const Summary = styled('div', {
@@ -158,10 +157,9 @@ export const Summary = styled('div', {
     },
 
     '&:not(:disabled):hover': {
-      backgroundColor: '$green300'
-    }
-
-  }
+      backgroundColor: '$green300',
+    },
+  },
 })
 
 export const SummaryTitle = styled('div', {
@@ -176,9 +174,9 @@ export const SummaryTitle = styled('div', {
     },
     '&:last-child': {
       fontSize: '1.125rem',
-      color: '$gray300'
-    }
-  }
+      color: '$gray300',
+    },
+  },
 })
 
 export const SummaryValors = styled('div', {
@@ -192,7 +190,7 @@ export const SummaryValors = styled('div', {
     fontWeight: 'bold',
 
     '&:last-child': {
-      fontSize: '1.5rem'
-    }
-  }
+      fontSize: '1.5rem',
+    },
+  },
 })

@@ -1,22 +1,21 @@
-import { MouseEvent } from "react"
-import { CaretRight } from "phosphor-react"
+import { MouseEvent } from 'react'
+import { CaretRight } from 'phosphor-react'
 
-import { ArrowLeftButton, ArrowRightButton } from "./styles"
+import { ArrowLeftButton, ArrowRightButton } from './styles'
 
 interface SlideArrowProps {
   left?: boolean
-  disabled?: boolean,
+  disabled?: boolean
   onClick?: (event: MouseEvent) => void
 }
 
 export function SlideArrow({ left, disabled, onClick }: SlideArrowProps) {
-
   return left ? (
     <ArrowLeftButton>
       <CaretRight
         size={48}
         onClick={onClick}
-        className={disabled? '--disabled' : ''}
+        className={disabled ? '--disabled' : ''}
       />
     </ArrowLeftButton>
   ) : (

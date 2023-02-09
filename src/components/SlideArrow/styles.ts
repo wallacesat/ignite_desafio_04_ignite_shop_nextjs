@@ -1,4 +1,4 @@
-import { styled } from "@/styles"
+import { styled } from '@/styles'
 
 export const ArrowButtonBase = styled('div', {
   position: 'absolute',
@@ -7,7 +7,8 @@ export const ArrowButtonBase = styled('div', {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  background: 'linear-gradient(90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
+  background:
+    'linear-gradient(90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
 
   '& > svg': {
     color: '$gray300',
@@ -15,22 +16,22 @@ export const ArrowButtonBase = styled('div', {
     display: 'initial',
 
     '&:hover': {
-      color: '$white'
+      color: '$white',
     },
 
     '&.--disabled': {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
 })
 
 export const ArrowLeftButton = styled(ArrowButtonBase, {
   transform: 'matrix(-1, 0, 0, 1, 0, 0)',
   top: 0,
-  left: 0
+  left: 0,
 })
 
 export const ArrowRightButton = styled(ArrowButtonBase, {
   top: 0,
-  right: 0
+  right: 0,
 })

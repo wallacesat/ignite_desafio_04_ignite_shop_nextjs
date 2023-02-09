@@ -17,39 +17,41 @@ import {
   Overlay,
   Summary,
   SummaryTitle,
-  SummaryValors
+  SummaryValors,
 } from './styles'
 
 interface CartModalProps {
   isOpen?: boolean
 }
 
-type RedirectCheckoutStatus = 'idle' | 'redirecting' | 'redirect-error' | 'missing-items'
+type RedirectCheckoutStatus =
+  | 'idle'
+  | 'redirecting'
+  | 'redirect-error'
+  | 'missing-items'
 
 export function CartModal({ isOpen }: CartModalProps) {
-
   const {
     cartDetails,
     cartCount,
     formattedTotalPrice,
     redirectToCheckout,
-    removeItem
+    removeItem,
   } = useShoppingCart()
 
   const [status, setStatus] = useState<RedirectCheckoutStatus>('idle')
 
-  const cartItems = Object.keys(cartDetails).map(key => {
+  const cartItems = Object.keys(cartDetails).map((key) => {
     return {
       name: cartDetails[key].name,
       imageUrl: cartDetails[key].image,
       price: cartDetails[key].price,
       id: cartDetails[key].id,
-      quantity: cartDetails[key].quantity
+      quantity: cartDetails[key].quantity,
     }
   })
 
   async function handleRedirectToCheckout() {
-
     if (cartCount > 0) {
       setStatus('redirecting')
       try {
@@ -75,46 +77,51 @@ export function CartModal({ isOpen }: CartModalProps) {
     <Dialog.Portal>
       <Overlay />
 
-      <Content className={isOpen ? '-is-open' : ''} >
+      <Content className={isOpen ? '-is-open' : ''}>
         <Dialog.Title>Sacola de compras</Dialog.Title>
         <CloseButton>
           <X size={24} />
         </CloseButton>
 
-          <OrderItems>
-            {
-              cartItems.map(cartItem => (
-                <Item key={cartItem.id}>
-                  <ImageContainer>
-                    <Image src={cartItem.imageUrl} width={95} height={95} alt=""/>
-                  </ImageContainer>
+        <OrderItems>
+          {cartItems.map((cartItem) => (
+            <Item key={cartItem.id}>
+              <ImageContainer>
+                <Image src={cartItem.imageUrl} width={95} height={95} alt="" />
+              </ImageContainer>
 
-                  <ItemDescription>
-                    <p>{cartItem.name}</p>
-                    <span>{formatToBRLCurrencyPrice(cartItem.price)}</span>
-                    <button onClick={() => handleRemoveItemFromCart(cartItem.id)}>Remover</button>
-                  </ItemDescription>
+              <ItemDescription>
+                <p>{cartItem.name}</p>
+                <span>{formatToBRLCurrencyPrice(cartItem.price)}</span>
+                <button onClick={() => handleRemoveItemFromCart(cartItem.id)}>
+                  Remover
+                </button>
+              </ItemDescription>
 
-                  <ItemCount>
-                    {`${cartItem.quantity}x`}
-                  </ItemCount>
-                </Item>
-              ))
-            }
-          </OrderItems>
+              <ItemCount>{`${cartItem.quantity}x`}</ItemCount>
+            </Item>
+          ))}
+        </OrderItems>
 
-          <Summary>
-            <SummaryTitle>
-              <span>Quantidade</span>
-              <span>{cartCount} {`ite${cartCount === 1 ? 'm' : 'ns' }`}</span>
-            </SummaryTitle>
-            <SummaryValors>
-              <span>Valor total</span>
-              <span>{formattedTotalPrice}</span>
-            </SummaryValors>
+        <Summary>
+          <SummaryTitle>
+            <span>Quantidade</span>
+            <span>
+              {cartCount} {`ite${cartCount === 1 ? 'm' : 'ns'}`}
+            </span>
+          </SummaryTitle>
+          <SummaryValors>
+            <span>Valor total</span>
+            <span>{formattedTotalPrice}</span>
+          </SummaryValors>
 
-            <button disabled={cartCount < 1 || status === 'redirecting'} onClick={handleRedirectToCheckout}>Finalizar compra</button>
-          </Summary>
+          <button
+            disabled={cartCount < 1 || status === 'redirecting'}
+            onClick={handleRedirectToCheckout}
+          >
+            Finalizar compra
+          </button>
+        </Summary>
       </Content>
     </Dialog.Portal>
   )

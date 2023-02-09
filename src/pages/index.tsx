@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
 
-import { useShoppingCart } from 'use-shopping-cart';
+import { useShoppingCart } from 'use-shopping-cart'
 import { useKeenSlider } from 'keen-slider/react'
 import { Handbag } from 'phosphor-react'
 import Stripe from 'stripe'
 
-import { SlideArrow } from '@/components/SlideArrow';
+import { SlideArrow } from '@/components/SlideArrow'
 
 import { createStripe } from '@/lib/stripe'
-import { formatToBRLCurrencyPrice, formatToStripePrice } from '@/utils/formatters';
+import {
+  formatToBRLCurrencyPrice,
+  formatToStripePrice,
+} from '@/utils/formatters'
 
 import { HomeContainer, Product, ProductContent } from '@/styles/pages/home'
 
@@ -69,54 +72,48 @@ export default function Home({ products }: HomeProps) {
       </Head>
 
       <HomeContainer ref={sliderRef} className="keen-slider">
-        {loaded && instanceRef.current && (<SlideArrow
-          left
-          disabled={currentSlide === instanceRef.current.track.details.slides.length - 2}
-          onClick={
-            (e: any) => e.stopPropagation() || instanceRef.current?.next()
-          }
-        />)}
+        {loaded && instanceRef.current && (
+          <SlideArrow
+            left
+            disabled={
+              currentSlide ===
+              instanceRef.current.track.details.slides.length - 2
+            }
+            onClick={(e: any) =>
+              e.stopPropagation() || instanceRef.current?.next()
+            }
+          />
+        )}
 
-        {
-          products.map(product => (
-            <Product key={product.id} className="keen-slider__slide">
-              <Link
-                href={`/product/${product.id}`}
-                prefetch={false}
-              >
-                <ProductContent>
-                  <Image
-                    src={product.imageUrl}
-                    alt=""
-                    width={520}
-                    height={480}
-                  />
-                </ProductContent>
+        {products.map((product) => (
+          <Product key={product.id} className="keen-slider__slide">
+            <Link href={`/product/${product.id}`} prefetch={false}>
+              <ProductContent>
+                <Image src={product.imageUrl} alt="" width={520} height={480} />
+              </ProductContent>
+            </Link>
+
+            <footer>
+              <Link href={`/product/${product.id}`} prefetch={false}>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
               </Link>
-              
-              <footer>
-                <Link
-                  href={`/product/${product.id}`}
-                  prefetch={false}
-                >
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
-                </Link>
 
-                <button onClick={() => handleAddItemToCart(product)}>
-                  <Handbag size={32} weight="bold" />
-                </button>
-              </footer>
-            </Product>
-          ))
-        }
-        
-        {loaded && instanceRef.current && (<SlideArrow
-          disabled={currentSlide === 0}
-          onClick={
-            (e: any) => e.stopPropagation() || instanceRef.current?.prev()
-          }
-        />)}
+              <button onClick={() => handleAddItemToCart(product)}>
+                <Handbag size={32} weight="bold" />
+              </button>
+            </footer>
+          </Product>
+        ))}
+
+        {loaded && instanceRef.current && (
+          <SlideArrow
+            disabled={currentSlide === 0}
+            onClick={(e: any) =>
+              e.stopPropagation() || instanceRef.current?.prev()
+            }
+          />
+        )}
       </HomeContainer>
     </>
   )
@@ -124,10 +121,10 @@ export default function Home({ products }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const response = await createStripe().products.list({
-    expand: ['data.default_price']
+    expand: ['data.default_price'],
   })
 
-  const products = response.data.map(product => {
+  const products = response.data.map((product) => {
     const price = product.default_price as Stripe.Price
 
     return {
@@ -135,13 +132,13 @@ export const getStaticProps: GetStaticProps = async () => {
       name: product.name,
       imageUrl: product.images[0],
       price: formatToBRLCurrencyPrice(price.unit_amount),
-      defaultPriceId: price.id
+      defaultPriceId: price.id,
     }
   })
 
   return {
     props: {
-      products
+      products,
     },
     revalidate: 60 * 60 * 2, // 2 horas
   }

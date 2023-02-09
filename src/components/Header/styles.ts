@@ -1,18 +1,18 @@
-import { styled } from "@/styles";
+import { styled } from '@/styles'
 
 export const HeaderContainer = styled('header', {
   padding: '2rem 0',
   width: '100%',
   maxWidth: 1180,
   margin: '0 auto',
-  
+
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
 
   '&.-success-page': {
     justifyContent: 'center',
-  }
+  },
 })
 
 export const HeaderCartButton = styled('button', {
@@ -24,11 +24,11 @@ export const HeaderCartButton = styled('button', {
   position: 'relative',
 
   '& > svg': {
-    color: '$gray400'
+    color: '$gray400',
   },
 
   '&:hover': {
-    opacity: 0.6
+    opacity: 0.6,
   },
 
   '& > span': {
@@ -48,6 +48,6 @@ export const HeaderCartButton = styled('button', {
 
     position: 'absolute',
     top: '-25%',
-    right: '-25%'
-  }
+    right: '-25%',
+  },
 })

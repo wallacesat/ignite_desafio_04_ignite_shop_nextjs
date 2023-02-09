@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from '@stitches/react'
 
 export const SuccessContainer = styled('main', {
   display: 'flex',
@@ -10,7 +10,7 @@ export const SuccessContainer = styled('main', {
 
   h1: {
     fontSize: '$2xl',
-    color: '$gray100'
+    color: '$gray100',
   },
 
   p: {
@@ -24,8 +24,8 @@ export const SuccessContainer = styled('main', {
     strong: {
       '&:first-child': {
         textTransform: 'capitalize',
-      }
-    }
+      },
+    },
   },
 
   a: {
@@ -37,9 +37,9 @@ export const SuccessContainer = styled('main', {
     fontWeight: 'bold',
 
     '&:hover': {
-      color: '$green300'
-    }
-  }
+      color: '$green300',
+    },
+  },
 })
 
 export const ItemsImages = styled('div', {
@@ -63,12 +63,12 @@ export const ImageContainer = styled('div', {
   justifyContent: 'center',
 
   img: {
-    objectFit: 'cover'
+    objectFit: 'cover',
   },
 
   '&:nth-child(n + 2)': {
-    marginLeft: '-3.25rem'
-  }
+    marginLeft: '-3.25rem',
+  },
 })
 
 export const OverflowItemsIndicator = styled('div', {
@@ -83,5 +83,5 @@ export const OverflowItemsIndicator = styled('div', {
   fontWeight: 'bold',
   border: '3px solid $gray900',
   borderRadius: '50%',
-  marginLeft: '-1.5rem'
+  marginLeft: '-1.5rem',
 })
